@@ -1,61 +1,44 @@
-// atoms
-const id    = x =>      x;
-const konst = x => y => x;
+const id = x => x; // Identitätsfunktion
+const konst = x => y => x; // Funktion konst: nimmt ein x entgegen und ein y und gibt das x zurück (ignoriert das y).
+
+//const snd = x => y => y; // Funktion kite: nimmt ein x entgegen und ein y und gibt das y zurück (ignoriert das x).
+//const snd = x => konst(id)(x); // Die obere Funktion kann mach auch kürzen.
+const snd = konst(id); // Eta reduziert die obere Zeile
+
+/** ETA Redouktion **/
+/* Wenn der Rechteste Parameter ignoriert wird kann die klammer weg gelassen werden */
+//const T = x => y => x;
+//const T = x => y => konst(x)(y)
+//const T = x => konst(x)
+const T = konst; //if Abfrage
+//const F = x => y => snd(x)(y) //if Abfrage
+//const F = x => snd(x) //if Abfrage
+const F = snd; //if Abfrage
+const M = f => f(f); // Mockingbird
+
+/*const and = x => y => x(y)(x);
+const or = M;*/
+
+/** Was ist Algebra **/
+/* Ist eine Art Schlussfolgerungen zu ziehen */
+/* Schlussfolgern durch ausgleichen und ergänzen */
+/* Das ist genau das was wir mit der Eta Reduktion machen. Unser Code wird als algebrarischer Term behandelt. */
+
+// const and = x => y => x ( y (T)(F) ) ( y(F)(F));
+// const and = x => y => x ( y (T)(F) ) (x);
+const and = x => y => x (y)(x);
+
+// const or = x => y => x ( y(T)(T) ) ( y(T)(F) );
+// const or = x => y => x (x) (y);
+// const or = x => y => x (x)(y);
+// const or = x => x (x);
+const or = M;
 
 
-// derived
-const fst  = konst;
-const snd  = konst(id);
+const Pair = first => last => selector => selector (first) (last);
+const firstname = konst;
+const lastname = snd;
 
-const T = fst;
-const F = snd;
-
-const and = p => q => p(q)(p);
-
-const M   = f => f(f);
-const or  = M;
-
-const Pair = x => y => selector => selector(x)(y);
-const firstname = fst;
-const lastname  = snd;
-
-const Triple = x => y => z => f => f(x)(y)(z);
-const tfirstname = x => y => z => x;
-const tlastname  = x => y => z => y;
-const tage       = x => y => z => z;
-
-
-
-// Either
-
-const Left   = x => f => g => f(x);
-const Right  = x => f => g => g(x);
-const either = e => f => g => e (f) (g);
-
-
-// ----- special -----
-
-const Tuple = n => [
-    parmStore (n + 1) ( [] ) (parms => parms.reduce( (accu, it) => accu(it), parms.pop() ) ), // ctor
-    ...Array.from( {length:n}, (it, idx) => iOfN (n) (idx) () )                    // selectors
-];
-
-const iOfN = n => i => value => // from n curried params, take argument at position i,
-    n === 0
-    ? value
-    : x => iOfN (n-1) (i-1) ( i === 0 ? x : value );
-
-
-const parmStore = n => args => onDone =>  // n args to come
-    n === 0
-    ? onDone(args)
-    : arg => parmStore(n - 1)([...args, arg]) (onDone); // store parms in array
-
-const Choice = n => [
-    ...Array.from( {length:n}, (it, idx) => parmStore(n+1) ([]) (parms => parms[idx+1] (parms[0]) ) ), // ctors
-    id
-];
-
-
-
-
+const Left   = x => fl => fr => fl(x);
+const Right  = x => fl => fr => fr(x);
+const either = id;
