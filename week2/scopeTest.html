@@ -7,7 +7,13 @@
 <body>
     <script>
 
+        const id   = x => x;
+        const fst  = x => y => x;
+        const snd  = fst(id);
 
+
+
+        document.writeln(" ist " + snd(3)(4));
 
 
 

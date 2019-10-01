@@ -17,9 +17,8 @@ let snake = [
 ];
 let food = {x: 15, y: 15};
 
-function snakeEquals(a, b) { 
-	/* fill here */
-}
+const snakeEquals = (a, b) => a.x === b.x && a.y ===  b.y;
+
 
 function changeDirection(orientation) {
     /* fill here */
@@ -64,7 +63,7 @@ function nextBoard() {
     } else {
         /* fill here */ // no food found => no growth despite new head => remove last element
     }
-
+    snake.unshift(head);
     /* fill here */; // put head at front of the list
 }
 
