@@ -16,7 +16,9 @@ const safeDiv = num => divisor => divisor === 0
 const x_ = Math.random();
 
 //const eShow = f => f === "Cannot divide by 0" ? either (f)(msg => document.writeln(msg)) : either (f)(val => document.writeln("Result is: " + x_));
-const eShow = f => f(either (f)(msg => document.writeln(msg))(document.writeln("Result is: " + x_)));
+//const eShow = f => f(either (f)(msg => document.writeln(msg))(document.writeln("Result is: " + x_)));
+const eShow = f => either (f) (errorMessage => errorMessage)(resultMessage => "Result is: " + resultMessage);
 //const eShow = f => f(id)(a => "Result is" + a);
 
-eShow(safeDiv(1)(0)) === "Cannot divide by 0" && eShow( safeDiv(x_)(1)) === "Result is: " + x_;
+console.log(eShow(safeDiv(1)(0)) === "Cannot divide by 0");
+console.log(eShow(safeDiv(x_)(1)) === "Result is: " + x_);
